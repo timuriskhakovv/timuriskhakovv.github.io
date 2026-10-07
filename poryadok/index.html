@@ -597,7 +597,12 @@ function buildScene(){
     const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
     const side = new THREE.MeshStandardMaterial({color: k === 2 ? 0xBFE3A6 : 0xF4EFA3, roughness:.7});
     const face = new THREE.MeshStandardMaterial({map:t, roughness:.7});
-    const head = new THREE.Mesh(new THREE.BoxGeometry(2.3, 1.05, .04), [side,side,side,side,face,side]);
+    const head = new THREE.Mesh(new THREE.BoxGeometry(2.3, 1.05, .016), [side,side,side,side,face,side]);
+    loader.load('stickers/h' + k + '.jpg', t2 => {
+      t2.colorSpace = THREE.SRGBColorSpace; t2.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      face.map = t2; face.roughness = .92; face.needsUpdate = true;
+      side.color.setHex(k === 2 ? 0xBADDA0 : 0xEBDA92);
+    }, undefined, () => console.warn('заголовок h' + k + '.jpg не загрузился — остаётся рисованный'));
     head.position.set(COLX[k], 3.12, .05);
     head.rotation.z = (k - 1) * 0.02;
     head.castShadow = true;
@@ -645,12 +650,21 @@ function buildScene(){
   const dummy = new THREE.Object3D();
 
   /* карточки — плитки с толщиной */
-  const CW = 1.95, CH = 1.95, CT = .05;
+  const CW = 1.95, CH = 1.95, CT = .016;
+  /* настоящая бумага: фото стикеров и почерк Тимура; рисованная версия остаётся запасной */
+  const PAPER = {0xFFE27A:0xEBDA92, 0xF9B9C9:0xEDB5B8, 0xAFCDF5:0xBACEE4, 0xBFE3A6:0xBADDA0};
+  const photoSticker = (file, face, side, sideColor) => loader.load('stickers/' + file, t => {
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    face.map = t; face.roughness = .92; face.needsUpdate = true;
+    side.color.setHex(sideColor); side.roughness = .92;
+  }, undefined, () => console.warn('stickers/' + file + ' не загрузился — остаётся рисованный стикер'));
   const used = [0,0,0];
   const cards = CARDS.map((cfg, i) => {
     const tex = cardTexture(cfg, renderer.capabilities.getMaxAnisotropy());
     const side = makeBendable(new THREE.MeshStandardMaterial({color:cfg.c, roughness:.55, metalness:.02}));
     const face = makeBendable(new THREE.MeshStandardMaterial({map:tex, roughness:.5, metalness:.02}));
+    photoSticker('c' + i + '.jpg', face, side, PAPER[cfg.c] || cfg.c);
     face.userData.uBend = side.userData.uBend = {value:0};
     face.userData.uPhase = side.userData.uPhase = {value: i*1.3};
     const mesh = new THREE.Mesh(new THREE.BoxGeometry(CW, CH, CT, 16, 16, 1),
