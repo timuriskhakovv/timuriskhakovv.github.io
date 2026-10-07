@@ -430,56 +430,61 @@ const counters = [...document.querySelectorAll('.cnt')];
 let renderFlow = () => {};          /* заменится, когда сцена соберётся */
 
 /* ---- текст карточки рисуем в картинку ---- */
+/* бумага — фото его стикеров (по одному на цвет), текст — печатным рукописным шрифтом поверх */
+const PAPER_FILE = {0xFFE27A:'yellow', 0xF9B9C9:'pink', 0xAFCDF5:'blue', 0xBFE3A6:'green', 0xFFC99A:'orange'};
+const paperCache = {};
+function paperImage(name){
+  return paperCache[name] || (paperCache[name] = new Promise((ok, no) => {
+    const im = new Image(); im.onload = () => ok(im); im.onerror = no; im.src = 'stickers/paper-' + name + '.jpg';
+  }));
+}
+function wrapLines(g, text, maxW){
+  const lines = []; let line = '';
+  for(const w of text.split(' ')){
+    const t = line ? line + ' ' + w : w;
+    if(line && g.measureText(t).width > maxW){ lines.push(line); line = w; } else line = t;
+  }
+  lines.push(line);
+  return lines;
+}
 function cardTexture(card, maxAniso){
   const W = 900, H = 900, c = document.createElement('canvas');
   c.width = W; c.height = H;
   const g = c.getContext('2d');
   const hex = '#' + card.c.toString(16).padStart(6,'0');
-  g.fillStyle = hex; g.fillRect(0,0,W,H);
-  /* неровности бумаги */
-  for(let i=0;i<2600;i++){
-    g.fillStyle = 'rgba(0,0,0,' + (Math.random()*.02) + ')';
-    g.fillRect(Math.random()*W, Math.random()*H, 2, 2);
-  }
-  const sh = g.createLinearGradient(0,0,0,H);
-  sh.addColorStop(0,'rgba(255,255,255,.18)');
-  sh.addColorStop(.55,'rgba(255,255,255,0)');
-  sh.addColorStop(1,'rgba(0,0,0,.10)');
-  g.fillStyle = sh; g.fillRect(0,0,W,H);
-
-  g.fillStyle = card.done ? 'rgba(28,32,46,.55)' : '#1C2038';
-  g.font = '600 112px Caveat, "Comic Sans MS", cursive';
-  g.textBaseline = 'top';
-  const words = card.text.split(' ');
-  let line = '', y = 180, lastW = 0, lines = [];
-  for(const w of words){
-    const t = line ? line + ' ' + w : w;
-    if(g.measureText(t).width > W - 190){ lines.push(line); line = w; } else line = t;
-  }
-  lines.push(line);
-  y = Math.max(215, 430 - lines.length*62);
-  lines.forEach((ln,k) => {
-    g.save();
-    g.translate(110, y + k*118);
-    g.rotate((Math.random()-.5) * 0.012);     /* строки чуть косые, как от руки */
-    g.fillText(ln, 0, 0);
-    lastW = g.measureText(ln).width;
-    g.restore();
-  });
-  if(card.done){
-    g.strokeStyle = 'rgba(28,32,46,.5)'; g.lineWidth = 6;
-    g.beginPath();
-    g.moveTo(110, y + (lines.length-1)*118 + 74);
-    g.lineTo(110 + lastW, y + (lines.length-1)*118 + 66);
-    g.stroke();
-  }
-  g.fillStyle = 'rgba(28,32,46,.62)';
-  g.font = '600 62px Caveat, cursive';
-  g.fillText(card.tag, 110, H - 140);
-
+  const tilt = Array.from({length:6}, () => (Math.random()-.5) * 0.012);   /* строки чуть косые, как от руки */
+  const paint = paper => {
+    if(paper) g.drawImage(paper, 0, 0, W, H); else { g.fillStyle = hex; g.fillRect(0,0,W,H); }
+    g.fillStyle = card.done ? 'rgba(28,32,46,.6)' : '#1C2038';
+    g.font = '600 118px Caveat, "Comic Sans MS", cursive';
+    g.textAlign = 'left'; g.textBaseline = 'top';
+    const lines = wrapLines(g, card.text, W - 190);
+    const y = Math.max(215, 430 - lines.length*62);
+    let lastW = 0;
+    lines.forEach((ln,k) => {
+      g.save(); g.translate(100, y + k*122); g.rotate(tilt[k % tilt.length]);
+      g.fillText(ln, 0, 0); lastW = g.measureText(ln).width; g.restore();
+    });
+    if(card.done){
+      g.strokeStyle = 'rgba(28,32,46,.5)'; g.lineWidth = 6;
+      g.beginPath();
+      g.moveTo(100, y + (lines.length-1)*122 + 76);
+      g.lineTo(100 + lastW, y + (lines.length-1)*122 + 68);
+      g.stroke();
+    }
+    g.fillStyle = 'rgba(28,32,46,.66)';
+    g.font = '600 66px Caveat, cursive';
+    g.fillText(card.tag, 100, H - 140);
+  };
+  paint(null);
   const tex = new THREE.CanvasTexture(c);
   tex.anisotropy = maxAniso || 8;
   tex.colorSpace = THREE.SRGBColorSpace;
+  const repaint = paper => { paint(paper); tex.needsUpdate = true; };
+  let got = null;
+  paperImage(PAPER_FILE[card.c] || 'yellow').then(im => { got = im; repaint(im); })
+    .catch(() => console.warn('бумага для стикера не загрузилась — остаётся ровный цвет'));
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(() => repaint(got));
   return tex;
 }
 
@@ -648,23 +653,10 @@ function buildScene(){
   /* заголовки колонок — такие же квадратные стикеры, как на его доске месяца */
   const HS = 1.3;
   ['Нужно сделать','Запланировано','В процессе: мяч у исполнителя','В процессе: мяч у меня','Сегодня','Сделано'].forEach((title, k) => {
-    const c = document.createElement('canvas'); c.width = c.height = 512;
-    const g = c.getContext('2d');
-    g.fillStyle = '#BFE3A6'; g.fillRect(0,0,512,512);
-    g.fillStyle = '#1C2038'; g.font = '700 64px Caveat, cursive'; g.textAlign = 'center'; g.textBaseline = 'middle';
-    const ws = title.split(' '); let ln = '', lines = [];
-    ws.forEach(w => { const t = ln ? ln + ' ' + w : w; if(g.measureText(t).width > 440){ lines.push(ln); ln = w; } else ln = t; });
-    lines.push(ln);
-    lines.forEach((l, j) => g.fillText(l, 256, 270 + (j - (lines.length-1)/2) * 70));
-    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
-    const side = new THREE.MeshStandardMaterial({color:0xBFE3A6, roughness:.7});
-    const face = new THREE.MeshStandardMaterial({map:t, roughness:.7});
+    const t = cardTexture({c:0xBFE3A6, text:title, tag:''}, renderer.capabilities.getMaxAnisotropy());
+    const side = new THREE.MeshStandardMaterial({color:0xBADDA0, roughness:.92});
+    const face = new THREE.MeshStandardMaterial({map:t, roughness:.92});
     const head = new THREE.Mesh(new THREE.BoxGeometry(HS, HS, .016), [side,side,side,side,face,side]);
-    loader.load('stickers/h' + k + '.jpg', t2 => {
-      t2.colorSpace = THREE.SRGBColorSpace; t2.anisotropy = renderer.capabilities.getMaxAnisotropy();
-      face.map = t2; face.roughness = .92; face.needsUpdate = true;
-      side.color.setHex(0xBADDA0);
-    }, undefined, () => console.warn('заголовок h' + k + '.jpg не загрузился — остаётся рисованный'));
     head.position.set(COLX[k], FH/2 - .22 - HS/2, .05);
     head.rotation.z = ((k % 3) - 1) * 0.02;
     head.castShadow = true;
@@ -730,7 +722,7 @@ function buildScene(){
     const tex = cardTexture(cfg, renderer.capabilities.getMaxAnisotropy());
     const side = makeBendable(new THREE.MeshStandardMaterial({color:cfg.c, roughness:.55, metalness:.02}));
     const face = makeBendable(new THREE.MeshStandardMaterial({map:tex, roughness:.5, metalness:.02}));
-    photoSticker(cfg.img + '.jpg', face, side, PAPER[cfg.c] || cfg.c);
+    side.color.setHex(PAPER[cfg.c] || cfg.c); side.roughness = face.roughness = .92;
     face.userData.uBend = side.userData.uBend = {value:0};
     face.userData.uPhase = side.userData.uPhase = {value: i*1.3};
     const mesh = new THREE.Mesh(new THREE.BoxGeometry(CW, CH, CT, 16, 16, 1),
