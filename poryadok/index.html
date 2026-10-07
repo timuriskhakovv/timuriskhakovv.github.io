@@ -608,23 +608,20 @@ function buildScene(){
     quad([[-Xo,-Yo,-Yo/U,0],[-Xo, Yo, Yo/U,0],[-Xi, Yi, Yi/U,1],[-Xi,-Yi,-Yi/U,1]], CW_);
     quad([[ Xo,-Yo,-Yo/U,0],[ Xo, Yo, Yo/U,0],[ Xi, Yi, Yi/U,1],[ Xi,-Yi,-Yi/U,1]], CCW);
   }, undefined, () => console.warn('frame.jpg не загрузился — остаётся прежняя рама'));
-  /* кнопка — фото его деревянной кнопки; шарик остаётся запасным, пока фото не загрузилось */
-  const pinPhotoMat = new THREE.MeshStandardMaterial({transparent:true, alphaTest:.03, roughness:.85, depthWrite:false});
-  const pinPhotoGeo = new THREE.PlaneGeometry(1, 1);
-  const pinSlots = [];
-  let pinReady = false;
-  const applyPin = ({parent, ball, y, z, size}) => {
-    ball.visible = false;
-    const m = new THREE.Mesh(pinPhotoGeo, pinPhotoMat);
-    m.scale.set(size, size, 1); m.position.set(size*.03, y - size*.04, z); m.renderOrder = 5;
+  /* кнопка — объёмная, по форме его деревянной: под любым углом камеры выглядит целой и даёт настоящую тень */
+  const pinGeo = new THREE.LatheGeometry([[0,0],[.07,0],[.118,.03],[.132,.065],[.118,.1],[.084,.122],[.082,.14],[.1,.15],[.108,.158],[.108,.196],[.1,.204],[0,.204]].map(q => new THREE.Vector2(q[0], q[1])), 32);
+  pinGeo.rotateX(Math.PI/2);
+  const pinWood = new THREE.MeshStandardMaterial({color:0xC49C7A, roughness:.82, metalness:0});
+  loader.load('pinwood.jpg', t => {
+    t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.MirroredRepeatWrapping; t.repeat.set(2, 1);
+    pinWood.map = t; pinWood.color.setHex(0xFFFFFF); pinWood.needsUpdate = true;
+  }, undefined, () => console.warn('pinwood.jpg не загрузился — кнопки остаются одноцветными'));
+  const photoPin = ({parent, ball, y, z, size}) => {
+    ball.visible = false; ball.castShadow = false;
+    const m = new THREE.Mesh(pinGeo, pinWood);
+    m.scale.setScalar(size / .56); m.position.set(0, y, z - .012); m.castShadow = true;
     parent.add(m);
   };
-  const photoPin = slot => { pinReady ? applyPin(slot) : pinSlots.push(slot); };
-  loader.load('pin.png', t => {
-    t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = renderer.capabilities.getMaxAnisotropy();
-    pinPhotoMat.map = t; pinPhotoMat.needsUpdate = true; pinReady = true;
-    pinSlots.forEach(applyPin);
-  }, undefined, () => console.warn('pin.png не загрузился — остаются рисованные кнопки'));
 
   /* заголовки колонок — стикеры сверху, как у него на доске */
   ['Нужно сделать','Сегодня','Сделано'].forEach((title, k) => {
@@ -653,19 +650,14 @@ function buildScene(){
   });
 
   /* письма: как в «Гарри Поттере» — сотня конвертов, гнутся и планируют */
+  /* в вихре летают те же стикеры, что потом лягут на доску: фактура бумаги с фото, цвет — на каждый свой */
   const envTex = (() => {
-    const c = document.createElement('canvas'); c.width = 512; c.height = 340;
-    const g = c.getContext('2d');
-    g.fillStyle = '#EFE6D2'; g.fillRect(0,0,512,340);
-    g.strokeStyle = 'rgba(120,96,60,.35)'; g.lineWidth = 4;
-    g.beginPath(); g.moveTo(0,0); g.lineTo(256,190); g.lineTo(512,0); g.stroke();
-    g.beginPath(); g.moveTo(0,340); g.lineTo(210,165); g.moveTo(512,340); g.lineTo(302,165); g.stroke();
-    g.fillStyle = '#9E2B25'; g.beginPath(); g.arc(256,190,34,0,Math.PI*2); g.fill();
-    g.fillStyle = 'rgba(255,255,255,.18)'; g.beginPath(); g.arc(246,180,12,0,Math.PI*2); g.fill();
+    const c = document.createElement('canvas'); c.width = c.height = 8;
+    const g = c.getContext('2d'); g.fillStyle = '#ECECEC'; g.fillRect(0,0,8,8);
     const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
   })();
   const N = innerWidth < 700 ? 60 : 130;
-  const envGeo = new THREE.PlaneGeometry(1.25, 0.84, 10, 6);
+  const envGeo = new THREE.PlaneGeometry(1.05, 1.05, 8, 8);
   const aPhase = new Float32Array(N), aBend = new Float32Array(N);
   for(let i=0;i<N;i++){ aPhase[i] = Math.random()*6.28; aBend[i] = .8 + Math.random()*.7; }
   envGeo.setAttribute('aPhase', new THREE.InstancedBufferAttribute(aPhase, 1));
@@ -673,6 +665,14 @@ function buildScene(){
   const envMat = makeBendable(new THREE.MeshStandardMaterial({map:envTex, roughness:.8, side:THREE.DoubleSide}), true);
   const envs = new THREE.InstancedMesh(envGeo, envMat, N);
   envs.castShadow = true;
+  {
+    const NOTE = [0xEBDA92, 0xEDB5B8, 0xBACEE4, 0xEFCCA8, 0xBADDA0], col = new THREE.Color();
+    for(let i=0;i<N;i++) envs.setColorAt(i, col.setHex(NOTE[i % NOTE.length]));
+    envs.instanceColor.needsUpdate = true;
+    loader.load('stickers/paper.jpg', t => {
+      t.colorSpace = THREE.SRGBColorSpace; envMat.map = t; envMat.roughness = .92; envMat.needsUpdate = true;
+    }, undefined, () => console.warn('stickers/paper.jpg не загрузился — стикеры в вихре остаются гладкими'));
+  }
   envs.frustumCulled = false;
   scene.add(envs);
   const envData = [];
