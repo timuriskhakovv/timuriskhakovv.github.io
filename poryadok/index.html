@@ -630,6 +630,9 @@ function buildScene(){
   const pinGeo = new THREE.LatheGeometry([[0,0],[.08,0],[.125,.03],[.137,.065],[.125,.098],[.097,.112],[.092,.118],[.092,.195],[.086,.203],[0,.203]].map(q => new THREE.Vector2(q[0], q[1])), 36);
   pinGeo.rotateX(Math.PI/2);
   const pinCapGeo = new THREE.CircleGeometry(.087, 36);
+  /* стальная игла: видна, пока кнопка летит, и уходит в пробку при посадке */
+  const pinNeedleGeo = new THREE.CylinderGeometry(.011, .002, .26, 10); pinNeedleGeo.rotateX(Math.PI/2);
+  const pinSteel = new THREE.MeshStandardMaterial({color:0xC9CED6, roughness:.28, metalness:.9});
   const pinWood = new THREE.MeshStandardMaterial({color:0xCEAC8C, roughness:.86, metalness:0});
   const pinCap = new THREE.MeshStandardMaterial({color:0xCEAC8C, roughness:.9, metalness:0});
   loader.load('pinwood.jpg', t => {
@@ -645,7 +648,8 @@ function buildScene(){
     const g = new THREE.Group(), k = size / .56;
     const body = new THREE.Mesh(pinGeo, pinWood); body.castShadow = true;
     const cap = new THREE.Mesh(pinCapGeo, pinCap); cap.position.z = .2035; cap.rotation.z = Math.random()*6.28;
-    g.add(body, cap); g.scale.setScalar(k); g.position.set(0, y, z - .012);
+    const needle = new THREE.Mesh(pinNeedleGeo, pinSteel); needle.position.z = -.128; needle.castShadow = true;
+    g.add(body, cap, needle); g.scale.setScalar(k); g.position.set(0, y, z - .012);
     parent.add(g);
     return g;
   };
