@@ -850,7 +850,9 @@ function buildScene(){
     });
     let camWant, lookWant;
     if(best >= 0 && bestW > 0.04){
-      const card = cards[best % cards.length];
+      /* каждый раздел смотрит на свою колонку: слева направо, по кругу */
+      const colCards = cards.filter(o => o.cfg.col === best % COLX.length);
+      const card = colCards[best % colCards.length] || cards[best % cards.length];
       lookWant = board.localToWorld(tmpA.copy(card.to));
       camWant = tmpB.copy(lookWant).add(new THREE.Vector3(0.7, 0.5, 4.2));
       focusW += (bestW - focusW) * .08;
