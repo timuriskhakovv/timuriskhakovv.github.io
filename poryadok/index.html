@@ -647,6 +647,7 @@ function buildScene(){
     const cap = new THREE.Mesh(pinCapGeo, pinCap); cap.position.z = .2035; cap.rotation.z = Math.random()*6.28;
     g.add(body, cap); g.scale.setScalar(k); g.position.set(0, y, z - .012);
     parent.add(g);
+    return g;
   };
 
   /* заголовки колонок — такие же квадратные стикеры, как на его доске месяца */
@@ -734,7 +735,8 @@ function buildScene(){
     pin.position.set(0, CH/2 - .15, CT/2 + .05);
     pin.castShadow = true;
     mesh.add(pin);
-    photoPin({parent:mesh, ball:pin, y:CH/2 - .15, z:CT/2 + .012, size:.38});
+    /* кнопка летит отдельно от листка и втыкается, когда он лёг на доску */
+    const pinG = photoPin({parent:board, ball:pin, y:0, z:0, size:.38});
     const slot = used[cfg.col]++;
     const to = new THREE.Vector3(COLX[cfg.col], FH/2 - .22 - HS - .12 - CH/2 - slot*1.42, CT/2 + .04);
     const from = new THREE.Vector3(
@@ -748,7 +750,9 @@ function buildScene(){
       (i%2 ? .35 : -.3)
     );
     board.add(mesh);
-    return {mesh, to, from, rot, cfg};
+    const pinTo = new THREE.Vector3(to.x, to.y + CH/2 - .15, to.z + CT/2);
+    const pinFrom = new THREE.Vector3(to.x + (i%2 ? -3.4 : 3.4) + (i%3 - 1)*.8, to.y + 2.6 - (i%4)*1.1, 3.2 + (i%5)*.9);
+    return {mesh, to, from, rot, cfg, pin:pinG, pinTo, pinFrom};
   });
 
   function resize(){
@@ -821,6 +825,14 @@ function buildScene(){
       o.mesh.scale.set(sc, sc, 1);
       o.mesh.material[4].userData.uBend.value = k * 1.1;
       if(t > .6) counts[o.cfg.col]++;
+      const tp = easeOut(clamp((p - i*Math.min(.055, .5/(cards.length-1)) - .08) / .38)), kp = 1 - tp;
+      v.lerpVectors(o.pinFrom, o.pinTo, tp);
+      o.pin.position.set(
+        v.x + Math.sin(now*1.3 + ph*1.7) * .45 * kp,
+        v.y + Math.sin(tp*Math.PI) * .35 + Math.cos(now*1.1 + ph) * .3 * kp,
+        v.z + Math.sin(tp*Math.PI) * .5
+      );
+      o.pin.rotation.set(kp * (2.2 + Math.sin(now*2.1 + ph)), kp * (1.6 + Math.cos(now*1.7 + ph)), 0);
     });
     counts.forEach((c,i) => { if(c !== lastCounts[i]){ counters[i].textContent = c; lastCounts[i] = c; } });
     /* камера: пока идёт доска — общий план, дальше наезжает на карточку раздела */
