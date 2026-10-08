@@ -518,7 +518,7 @@ function buildScene(){
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
-  camera.position.set(0, 0.1, 17.6);
+  camera.position.set(0, 0.1, 19.4);
 
   scene.add(new THREE.AmbientLight(0xffffff, 0.75));
   const key = new THREE.DirectionalLight(0xfff3d0, 1.5);
@@ -534,7 +534,7 @@ function buildScene(){
   /* доска — наклонённый стол */
   const board = new THREE.Group();
   board.rotation.x = -0.30;
-  board.position.y = -0.55;
+  board.position.y = -1.2;   /* доска ниже и чуть дальше: заголовок сцены не ложится на раму */
   scene.add(board);
 
   /* пробка: точно как его доска — крошка, тёплый цвет */
@@ -765,7 +765,7 @@ function buildScene(){
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     /* доска целиком влезает по ширине и на узком телефоне */
-    const needV = 2 * Math.atan(5.55 / 17.6 / camera.aspect) * 180 / Math.PI;
+    const needV = 2 * Math.atan(5.55 / 19.4 / camera.aspect) * 180 / Math.PI;
     camera.fov = Math.min(78, Math.max(32, needV));
     camera.updateProjectionMatrix();
   }
@@ -858,7 +858,7 @@ function buildScene(){
       focusW += (bestW - focusW) * .08;
     } else {
       lookWant = tmpA.set(0, 0, 0);
-      camWant = tmpB.set(0, 0.1, 17.6);
+      camWant = tmpB.set(0, 0.1, 19.4);
       focusW += (0 - focusW) * .08;
     }
     camera.position.lerp(camWant, .06);
