@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Клиенты</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Onest:wght@400;600;800&family=Oswald:wght@500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Цвета и шрифты — как на сайте poryadok */
+:root{
+  --bg:#0A0B0D; --card:#14161A; --line:#24272D; --ink:#F4F4F1; --muted:#9A9C9F;
+  --accent:#FFE27A; --green:#BFE3A6; --pink:#F9B9C9; --blue:#AFCDF5; --orange:#FFC99A; --st-ink:#141517;
+  --display:'Oswald',sans-serif; --body:'Onest',sans-serif; --hand:'Caveat',cursive; --mono:'JetBrains Mono',monospace;
+}
+@media (prefers-color-scheme: light){
+  :root{ --bg:#F3F1EC; --card:#FFFFFF; --line:#E2DED5; --ink:#141517; --muted:#6B6A66; --accent:#E8B400; }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+body{padding:max(16px,env(safe-area-inset-top)) 16px 48px}
+.wrap{max-width:760px;margin:0 auto}
+h1{font-family:var(--display);font-weight:600;font-size:32px;letter-spacing:.02em;text-transform:uppercase}
+.sub{color:var(--muted);font-size:13px;font-family:var(--mono);margin-top:4px}
+
+/* вход */
+#vhod{min-height:80vh;display:flex;flex-direction:column;justify-content:center;gap:14px;max-width:360px;margin:0 auto}
+#vhod input{font:inherit;font-size:18px;padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);outline:none}
+#vhod input:focus{border-color:var(--accent)}
+#vhod button{font:600 17px var(--body);padding:14px;border:0;border-radius:12px;background:var(--accent);color:var(--st-ink);cursor:pointer;transition:transform .12s}
+#vhod button:active{transform:scale(.97)}
+#oshibka{color:var(--pink);font-size:14px;min-height:20px}
+
+/* карточка клиента */
+.klient{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-top:20px}
+.klient h2{font-family:var(--display);font-weight:600;font-size:26px;text-transform:uppercase;letter-spacing:.02em}
+.meta{color:var(--muted);font-size:14px;margin-top:4px}
+.status{display:inline-block;margin-top:10px;padding:4px 10px;border-radius:999px;background:var(--accent);color:var(--st-ink);font-size:13px;font-weight:600}
+
+/* полоска этапов */
+.put{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin:22px 0 8px}
+.shag{height:10px;border-radius:5px;background:var(--line)}
+.shag.done{background:var(--green)}
+.shag.now{background:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 30%,transparent)}
+.put-podpis{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.etapy{margin-top:14px;display:grid;gap:6px}
+.etap{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:10px;font-size:14px}
+.etap .n{flex:0 0 26px;height:26px;border-radius:50%;display:grid;place-items:center;font:500 13px var(--mono);border:1px solid var(--line);color:var(--muted)}
+.etap.done .n{background:var(--green);border-color:var(--green);color:var(--st-ink)}
+.etap.now{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.etap.now .n{background:var(--accent);border-color:var(--accent);color:var(--st-ink)}
+.etap b{font-weight:600}
+.etap small{display:block;color:var(--muted);font-size:13px}
+
+/* блоки */
+.blok{margin-top:22px}
+.blok h3{font:600 12px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px}
+.sled{background:color-mix(in srgb,var(--blue) 16%,transparent);border-left:4px solid var(--blue);border-radius:12px;padding:14px 16px}
+.sled .zag{font-weight:800;font-size:17px}
+.sled .kogda{color:var(--muted);font-size:14px;margin:2px 0 10px}
+ul.spisok{list-style:none;display:grid;gap:6px}
+ul.spisok li{padding-left:22px;position:relative;font-size:15px}
+ul.spisok li::before{content:"";position:absolute;left:4px;top:9px;width:8px;height:8px;border-radius:2px;background:var(--orange)}
+.sled ul.spisok li::before{background:var(--blue)}
+.slova{font-family:var(--hand);font-size:24px;line-height:1.2;display:grid;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--line);border-radius:999px;padding:6px 12px;font-size:14px}
+.dengi{display:flex;align-items:center;gap:12px;font-size:15px}
+.bar{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green)}
+details{border-top:1px solid var(--line);padding:12px 0}
+details:first-of-type{border-top:0}
+summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary span{color:var(--muted);font:500 13px var(--mono);white-space:nowrap}
+details ul{margin-top:8px}
+.malo{color:var(--muted);font-size:13px;margin:8px 0 4px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <form id="vhod" autocomplete="off">
+    <h1>Клиенты</h1>
+    <p class="sub">Закрытая страница. Введи пароль.</p>
+    <input id="parol" type="password" placeholder="Пароль" autocomplete="current-password" autofocus>
+    <button type="submit">Открыть</button>
+    <div id="oshibka"></div>
+  </form>
+  <main id="ekran" hidden></main>
+</div>
+
+<script>
+// Данные клиентов зашифрованы (AES-GCM, ключ из пароля через PBKDF2-SHA256).
+// Собирает этот блок скрипт sobrat.py; открытые данные лежат только на Маке.
+const SHIFR = "__SHIFR__";
+
+const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+
+async function rasshifrovat(parol){
+  const p = JSON.parse(atob(SHIFR));
+  const kluch0 = await crypto.subtle.importKey("raw", new TextEncoder().encode(parol), "PBKDF2", false, ["deriveKey"]);
+  const kluch = await crypto.subtle.deriveKey(
+    {name:"PBKDF2", salt:b64(p.salt), iterations:p.iter, hash:"SHA-256"},
+    kluch0, {name:"AES-GCM", length:256}, false, ["decrypt"]);
+  const otkr = await crypto.subtle.decrypt({name:"AES-GCM", iv:b64(p.iv)}, kluch, b64(p.data));
+  return JSON.parse(new TextDecoder().decode(otkr));
+}
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const spisok = arr => arr.length ? `<ul class="spisok">${arr.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>` : `<p class="malo">—</p>`;
+const rub = n => n.toLocaleString("ru-RU") + " ₽";
+
+function kartochka(k, etapy){
+  const put = etapy.map(e => `<div class="shag ${e.n<k.etap?"done":e.n===k.etap?"now":""}"></div>`).join("");
+  const spisokEtapov = etapy.map(e => `
+    <div class="etap ${e.n<k.etap?"done":e.n===k.etap?"now":""}">
+      <div class="n">${e.n<k.etap?"✓":e.n}</div>
+      <div><b>${esc(e.nazvanie)}</b> <span class="malo">${esc(e.vremya)}</span><small>${esc(e.opisanie)}</small></div>
+    </div>`).join("");
+  const oplacheno = k.oplata.platezhi.reduce((s,p)=>s+p.summa,0);
+  const proc = Math.round(oplacheno / k.oplata.vsego * 100);
+  const podpisEtapa = `Этап ${k.etap} из ${etapy.length}`;
+  const istoriya = [...k.istoriya].reverse().map(v => `
+    <details>
+      <summary>${esc(v.nazvanie)} <span>${esc(v.data)}</span></summary>
+      <p class="malo">Итоги</p>${spisok(v.itogi)}
+      ${v.zadaniya.length?`<p class="malo">Задания</p>${spisok(v.zadaniya)}`:""}
+      ${v.dogovorennosti.length?`<p class="malo">Договорённости</p>${spisok(v.dogovorennosti)}`:""}
+    </details>`).join("");
+  return `
+  <section class="klient">
+    <h2>${esc(k.imya)}</h2>
+    <div class="meta">${esc(k.kratko)}</div>
+    <div class="meta">${esc(k.otkuda)}</div>
+    <span class="status">${esc(k.status)}</span>
+
+    <div class="put">${put}</div>
+    <div class="put-podpis"><span>${podpisEtapa}</span><span>${k.vremya_vstrech.map(esc).join(" · ")}</span></div>
+
+    <div class="blok">
+      <h3>Следующая встреча</h3>
+      <div class="sled">
+        <div class="zag">${esc(k.sleduyushchaya.nazvanie)}</div>
+        <div class="kogda">${esc(k.sleduyushchaya.kogda)}</div>
+        ${spisok(k.sleduyushchaya.podgotovka)}
+      </div>
+    </div>
+
+    <div class="blok"><h3>Открыто</h3>${spisok(k.otkryto)}</div>
+
+    <div class="blok"><h3>Его слова</h3><div class="slova">${k.ego_slova.map(s=>`<div>${esc(s)}</div>`).join("")}</div></div>
+
+    <div class="blok"><h3>Что болит</h3>${spisok(k.bol)}</div>
+
+    <div class="blok"><h3>Путь ведения</h3><div class="etapy">${spisokEtapov}</div></div>
+
+    <div class="blok">
+      <h3>Оплата</h3>
+      <div class="dengi"><span>${rub(oplacheno)} из ${rub(k.oplata.vsego)}</span><div class="bar"><i style="width:${proc}%"></i></div></div>
+      <p class="malo">Следующий: ${esc(k.oplata.sleduyushiy)}</p>
+    </div>
+
+    <div class="blok"><h3>История</h3>${istoriya}</div>
+  </section>`;
+}
+
+function pokazat(d){
+  document.getElementById("vhod").hidden = true;
+  const ekran = document.getElementById("ekran");
+  ekran.innerHTML = `<h1>Клиенты</h1><p class="sub">Обновлено ${esc(d.obnovleno)} · ${d.klienty.length} в работе</p>`
+    + d.klienty.map(k => kartochka(k, d.etapy)).join("");
+  ekran.hidden = false;
+}
+
+document.getElementById("vhod").addEventListener("submit", async e => {
+  e.preventDefault();
+  const parol = document.getElementById("parol").value;
+  const osh = document.getElementById("oshibka");
+  osh.textContent = "Открываю…";
+  try {
+    const d = await rasshifrovat(parol);
+    try { sessionStorage.setItem("klienty-p", parol); } catch(_) {}
+    pokazat(d);
+  } catch(_) {
+    osh.textContent = "Пароль не подошёл — данные не расшифровались.";
+  }
+});
+
+// пароль помнится до закрытия вкладки
+(async () => {
+  let p = null;
+  try { p = sessionStorage.getItem("klienty-p"); } catch(_) {}
+  if (p) { try { pokazat(await rasshifrovat(p)); } catch(_) {} }
+})();
+</script>
+</body>
+</html>

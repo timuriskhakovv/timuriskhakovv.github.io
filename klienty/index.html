@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Клиенты</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Onest:wght@400;600;800&family=Oswald:wght@500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Цвета и шрифты — как на сайте poryadok */
+:root{
+  --bg:#0A0B0D; --card:#14161A; --line:#24272D; --ink:#F4F4F1; --muted:#9A9C9F;
+  --accent:#FFE27A; --green:#BFE3A6; --pink:#F9B9C9; --blue:#AFCDF5; --orange:#FFC99A; --st-ink:#141517;
+  --display:'Oswald',sans-serif; --body:'Onest',sans-serif; --hand:'Caveat',cursive; --mono:'JetBrains Mono',monospace;
+}
+@media (prefers-color-scheme: light){
+  :root{ --bg:#F3F1EC; --card:#FFFFFF; --line:#E2DED5; --ink:#141517; --muted:#6B6A66; --accent:#E8B400; }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+body{padding:max(16px,env(safe-area-inset-top)) 16px 48px}
+.wrap{max-width:760px;margin:0 auto}
+h1{font-family:var(--display);font-weight:600;font-size:32px;letter-spacing:.02em;text-transform:uppercase}
+.sub{color:var(--muted);font-size:13px;font-family:var(--mono);margin-top:4px}
+
+/* вход */
+#vhod{min-height:80vh;display:flex;flex-direction:column;justify-content:center;gap:14px;max-width:360px;margin:0 auto}
+#vhod input{font:inherit;font-size:18px;padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);outline:none}
+#vhod input:focus{border-color:var(--accent)}
+#vhod button{font:600 17px var(--body);padding:14px;border:0;border-radius:12px;background:var(--accent);color:var(--st-ink);cursor:pointer;transition:transform .12s}
+#vhod button:active{transform:scale(.97)}
+#oshibka{color:var(--pink);font-size:14px;min-height:20px}
+
+/* карточка клиента */
+.klient{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-top:20px}
+.klient h2{font-family:var(--display);font-weight:600;font-size:26px;text-transform:uppercase;letter-spacing:.02em}
+.meta{color:var(--muted);font-size:14px;margin-top:4px}
+.status{display:inline-block;margin-top:10px;padding:4px 10px;border-radius:999px;background:var(--accent);color:var(--st-ink);font-size:13px;font-weight:600}
+
+/* полоска этапов */
+.put{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin:22px 0 8px}
+.shag{height:10px;border-radius:5px;background:var(--line)}
+.shag.done{background:var(--green)}
+.shag.now{background:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 30%,transparent)}
+.put-podpis{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.etapy{margin-top:14px;display:grid;gap:6px}
+.etap{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:10px;font-size:14px}
+.etap .n{flex:0 0 26px;height:26px;border-radius:50%;display:grid;place-items:center;font:500 13px var(--mono);border:1px solid var(--line);color:var(--muted)}
+.etap.done .n{background:var(--green);border-color:var(--green);color:var(--st-ink)}
+.etap.now{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.etap.now .n{background:var(--accent);border-color:var(--accent);color:var(--st-ink)}
+.etap b{font-weight:600}
+.etap small{display:block;color:var(--muted);font-size:13px}
+
+/* блоки */
+.blok{margin-top:22px}
+.blok h3{font:600 12px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px}
+.sled{background:color-mix(in srgb,var(--blue) 16%,transparent);border-left:4px solid var(--blue);border-radius:12px;padding:14px 16px}
+.sled .zag{font-weight:800;font-size:17px}
+.sled .kogda{color:var(--muted);font-size:14px;margin:2px 0 10px}
+ul.spisok{list-style:none;display:grid;gap:6px}
+ul.spisok li{padding-left:22px;position:relative;font-size:15px}
+ul.spisok li::before{content:"";position:absolute;left:4px;top:9px;width:8px;height:8px;border-radius:2px;background:var(--orange)}
+.sled ul.spisok li::before{background:var(--blue)}
+.slova{font-family:var(--hand);font-size:24px;line-height:1.2;display:grid;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--line);border-radius:999px;padding:6px 12px;font-size:14px}
+.dengi{display:flex;align-items:center;gap:12px;font-size:15px}
+.bar{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green)}
+details{border-top:1px solid var(--line);padding:12px 0}
+details:first-of-type{border-top:0}
+summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary span{color:var(--muted);font:500 13px var(--mono);white-space:nowrap}
+details ul{margin-top:8px}
+.malo{color:var(--muted);font-size:13px;margin:8px 0 4px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <form id="vhod" autocomplete="off">
+    <h1>Клиенты</h1>
+    <p class="sub">Закрытая страница. Введи пароль.</p>
+    <input id="parol" type="password" placeholder="Пароль" autocomplete="current-password" autofocus>
+    <button type="submit">Открыть</button>
+    <div id="oshibka"></div>
+  </form>
+  <main id="ekran" hidden></main>
+</div>
+
+<script>
+// Данные клиентов зашифрованы (AES-GCM, ключ из пароля через PBKDF2-SHA256).
+// Собирает этот блок скрипт sobrat.py; открытые данные лежат только на Маке.
+const SHIFR = "eyJzYWx0IjogIlViNktTdzVxdUtUaldWakQ0UDVGOHc9PSIsICJpdiI6ICJHVlByTTRVU3poK1NySEIzIiwgIml0ZXIiOiA2MDAwMDAsICJkYXRhIjogIlBYRlo0ODNranRvMzVPanM0VTBCSG0wd0c3aGltMEl5SkhWUWxvejlGYXFad0pCTHJET0hYeWt4QktqeVNzdVR0NUVodms5cTJWK3FuU3R4VFZPdS93OFl5bExxK0JQRWpPRHJYcExJZzJEbFAzNjNqdHV0WFczU281OHA3YlVaUGtjTjJiRDNQRktwSG5SYmdnUTlxdFlsS01LRVBScHVibDBZU3IxOVNNNkZ1N0VHUmtUTVFoZ0VyR1Z3MTRxNXdUQWRrZitCcEkzc0FuUTh6VUVSdzh6Uk1zWm42U3BNWEhGZ1puQUxOODMyYTNxbXBSdmp0V1hicDhudlliL0hJdVpOc1d3RytMM1N0cjVLUDJGVHozdUZ3NldQdElONDgrQy9BVnAyY3JGczMzZS9PaHdCKzF6L290QmRucG9GblhsZnZDa1NTaTVaaHEzS0lEaFVZdWYrOHFIMFk4YVlDUllmRm13Y3p6RnZnN0psRVc1RHlNU2V0SDlTbTQxbzZkd3cxamgxTGYya3gwRzNXeldRdWxveVZIa1diN01WT3BWU2RWalZzbzhxVWc5d01OY0lLay9UcG05a1pHWXhjdE1UOE5aUTRUc2VqcFZBS3Q1MmlRaUVjWGh4akx4SVlMaitlSHNXMFhuMHFsclA0bkgxeFFEVzd1WUhUKzliWTdOVHdyLy9sVFFvTVQ1UGNPNHp3QmhNaVBLTGhLcDJsM25MWld4L3FRN2d0di8vaElUTGZNYUJZRUt4eEp1MUw2eW4rY2N1cG9Ld3BGWTZya1BmT1I1YWR1cFJYZmIwTGZITnM0K0FQZWZZaFVSbnZIdTFTcXJKV3F1NnU1Q0lnSEtPMHIwYkpLbWN3N3NtaElNU1Y4Z2NIdThtRFZodGQ4U2ROT2liRnBOTVAzRFpldWtzZ3JiM0F2OEtsbzNDNjNXZE5QTk5uTms4OHNqUEF4VjBtbWJrSitOUCtUVEpYbm45TXBMZGVaUGlrMEpKUUl5K05jWnI3T0J4TkFpNmEwbHNmcTg1WFhWWjU2SzNrd2hEN2NqWlBVN1duSEJvV1hDbjJTbjRBUVh3T1JlL0ZVMFpnUTRMcTUrZEYrQWpiMnBjY2lOTXRyRnJXelpIU1dqSnd3RGsyT2hhRVVxakQ0VitnWWpjVGxDd3gybHg0N1M5ZnJpT3hSU2hjN3NSc2d3VzAzS25hL2lUVFhNcTZ2SXBQOGYwVlNxSkVBMmlwdmpWUTU4SG1IKyt2bm1JemdSKzEvZW1SVjhUVDByTzUva3pTT3ZJSVFSUVZ0TXo5cnJXeG8vOHBnOFhyaE8zK1YxaVh5clo0MHVKM3FtS3JremhNQkYwM0VFVmlQaXpJdld0Y1NrM1VpZnYzU2k5aW84OWhuOFEreFRyQ3pnbEZrSVJ6YWROc1BuSTgvN1dNOUcxRTFWTHdHZ3MrTlZIQnZnODgrQmx0WGJJdHR6RFQ0akpuSTM5aFRTdUk1RU1SVUdISmhuOFJUcXovOWx3UkNxdFJHelZKSkFMaWdGQlQxSWtROXFYTmZRVlhXZzEvMzhwNFhreVltNkVqSGNIdlVUVWZQV01ZT1JqVTluY0JBelVPeEF0S1RwNWRXcUdTekhCMXNXdjZ2QWR3MDRodlAzV2t0VXZFMTEybEJGODFlcnQ2U1FPNmUvd01YTFJWVjZrT2h0OFg1SkowK210WEI4Rk9uSEJNdG9uUkphbkVzOG9XWVExY0JQRWJKNTF0M2tGUFduNERZa2U2OUMxQzdTOHNTcjVvRkk1NmI4dU9SN1FMckg2UTVTclVZNmlaU2RxdFdCclRaN2RVUzR0eUJIeUZqWWRka01VQU1UZ0ZOdkkvWmFOMjhwakhrQi9vRncvNDhKN0hFenVSU0xNZkpEYkJQRmFtb2lyWHU4bXlOWXdHejVPMGxQUEM2SC9MOUlmRi93SzA1UVFhU3BLMzZXZ082V1lnWFdYcUJsbFFEbkQ1RmQ1OHNvZERGVXcwL3pmanpIaWRCN29uc2dSdlFKUXVINUVKWHRGeFpNWE1LR21lTC9KOTlTaXlSejBtclpiTGxldWtIQmdKbG9IanBySkhoUGJEeUJ2c1l2S3E5SFdGZWdTNmFRNk5VZWgwVSs2dm9tZXd0dW45NnVScVYrVFhSZmlEUEg1SlZWYjlKbElHTEdwMFExYmlYSW9UaXhpL2k2Mlo5eE9SVGlWWjU0aDJ5TndXRzZZNitmY3FFLzlUVWwxUUVuUk1XbjFpR1hIRlpXNnZOZTFZNEs2cksydEREYW5DRzVGak9obVNmUngxczB3Q3B1N2NTZi9BVVZ1R2srVlNDTWEwWnFhSW1wemR0a2xRaGNyRkFhU3F1QXl2SGR3b25NREF1dlVOSWRjY0NyMjRxTDFBcHdBOGg5UmswWDFXQ0lGVEFxbmdmaXpqanZwSUdCVXFoL1NYd0lybXplN0hwWlovcGp6cm5ZTHBFcDBNb2ZINEdxcVJHdFhpSFhITGcyUS95Y1ZhTCt5bmE4aTdoNkI0UUNGVGFGaThUWHFXcHlVdFErYXpNTXgvMVFDbEl3WDNrUEZrMzVEKzJENDhJdzNleW1xZnlocG9IRTU1d08wNSsrNDU3SnRoNVlQTUg0ald3dFpxYXc5Tmg3ZlRJUHJocjhkSFJMYVVtL3ZwWEZCdHJxcHVzc1IvS2lTZkNqeGlpMlVZZ1V2b0Z1T2I3YzRiaDhlZTBlTTc0aXRKbE5ZZjFqR1RqNmc2MWd4U1R2SGFTZFZaVitOSmJaRkhNMlNJaDFpc0xxOHY1aUVUR0FiZEdKNk9CTG9DVjB4ZW9ZLzAwbkloV0U1N1R3ODBIU1J4MFFLcU15TGFRS0JLd01UUGhqL0RwY2VOVWFKTk10WVZxNDFuR2Y0bEF3dC9NZU4zUzlFTWxBK2ZYMnMvbWljTTdsOHhaazZrZkZWbnliWmU0MHZPaEsyUDNrUngyUzV4eUJTNlNremVWU3pmbXdZWmw0Tjd3WkxpcTZ1OUxUSnJ3YUVxTFhieGxXZ3JjajRHU2s3bWYrTmtVS2VWNGlrQk5PZGxRMHN6Z0ZxUFlOZEI4QWVLeHFuSjcyTFloa2YvS2lnNWlrWTdmeTJOMkpuc0dSTzQxZHZFbFQ1aDZnOE9rd3JEeWtQeUpZa3A2WmIwT1dNTVkwSEt3OTIyajN3MmVhdnNRYTJqVVUrYWpKUktwd2tCMVBiWnpwVjM5YnM5Y1dOOVJyYjQ1czlOajllTSszbGc2SUNrNFJ4SEp2Wjc0N2Z4QkFPZUNWWUIxVzBHZ0NtTHowUi9kVmtLa2YySlVlZVd0eXNsQ0I0VVYwUnplUjV4b0dxdDhNMTU0dmFWUHVkMTVIRnZra3hTeDdMSVJNdWc0NTM0a1VGTHgrN2krbXdQSzhGSFp1c1BLdjZKb1d4T1NKSnVJMUVKdHhlNzkzR29ud0pFSmNQT2k3ZGcxa21WVng5RWtZdU8rNDdSdEdFL05xQzE3eCtUZGsrdzhBd1NndTZOZUdNd1dTVmYvY0dMVlhMWFIyVVIzUmpKQUJyUHhVSTU2djNIemdsT3lkZnlyY2E4M3dmUTQwYXBiVktzcGYyb1MzZnU1MHd6MmVRS1FzNE14UHBiNldjQnBwM2ZhUVpoSHMrU3hMZjFQcXhnMURsd3pUSFVUTFBKOVQycXB6amNoWkc5Q0FqSUlPK1R1YjNrWUVYWnJsZ3Jmak9rWmYrOGNxdGJOQ2kxbzcxeGtzYTJJb1Iyb1FxdmhlREc4WXQwTllHaitNOWIwQjBvOElOeWFMMnFVb0g0MGQ0VHN0U2xRN0h4SzZ3MjJ3RUN1WjVGUHRXaWdKYm11c3B0UDN0Rk1VRVQzN2ZlN0Q0dHk5aFFrLytlSDBwdW9VWVhEbFFFT0k2K1ozbVFKMytWS25qWmluME1NMWRxQllrRkszakJjQ0xmSTBDV2dmVndtalJRdmxTaFN3M0Q2eDlvNjFpMXZ2SStmRk5iNmJGM01xTEFCMDBRWDV4RXJnWGVYWFg3YXEwZ3lJQjUxVEVHckh4dzJrazk2QnUzeHVTUm9JcFJGeU9RRmtKRG1KajMrNStzRTJlSmN4SUNLVVRIVjF3Q3F3RUZFWlIzLys3WWY5U1haUjRLTGgyMEhjNU5YRFhzSmdqaVpManRSSitremlzd0xKV3R0bk5TTFM0ek80REFIZWsvKzNrTzhmSnMwTlZKNVkweWZUaW5pcFJCM1RMYk1GOFFsampVeUZZd2JUMDVWaGVVTVAvTTBVQU1Qd2dxVDVCS3dTbHhmUGJHeno3QnZXamF6MDRqVG93NVAwaE9NdUs1WlR1UkxCSXNadHAyUkFHZkVuWDdWeG1BOEVocWlzRTZXSlBGWTFBOXViT3hDT3RtbFExRE94UXQrU3E2MXd3eDduK2VtZHN0akZRWks4bFNya1UzZUFnWFR1L1Awby9pUjJCSDRNUHc0elBDUC9LRWtWZEdhWEtoU2Z5U0NacmNXTElCc3JvOGE2NVVoM0RUUGFoeEtEYWoxM05lc1VoQkgrT05PM1FsRXMrWFBKTXgyc3g3SVJiVk5iaXMwTXVqQ21tRnJzd29MOE85OUplOFk1OVBPSVdDZEMrQUFFVVBBaFVudExybDZoaXlsU3BnZzU4TkxnaHAzVkhDbElCb1RKY3ZXeWhFd0lnY3ZRdHljSWFPblo0QnNjS0FJa3QrbVlNcWtFanVYeXpTRnhDQWk0VW5xSjFkcURYRE1VUnBiTjZmMzBQeVNlUFdIa1ZXc1Y2VEowdXZ4R3NFci9HeXZMenZHM0lIczlJekVWTkloOUhjMHJvdTNHRUlRWVUwZkUycWlrMTcydWVWOHBTWjBUcFBSdU5DVXErYzc5clFZU3hSMUYxMDh1QWNPcHVGZE4wamRROHE1Z2p2blUvMUxxU1Ntc213azlmS1F1all1L0lTbHZEZW1SdlczT1J3SGZNWlg4Q1prMkwvZDNrSDhRVjA4Z0p0Q0pRcFBTcWFsVFdXYi9TUmF1aFdNditHSmpCRlJQTVp1V2xzcG1ZZGhmUTlLZ2R1dVFuM1ptOU1VVGZoamw1TGJrMFZtdlNEUXZ6V2JBdTNCcjM3N2tTc2lsZXdRS1haUFNXUC9hWlg3VE5UMW1NYWwzMEJQZDBEL0VzMmNkMnE3eEFmbE1zaS8wSFMwVXhJdlZKVDlwL2txZlhUMjI5cWhJQ2loeFZDWEVIV3RnSGZEanFOU0dmVnRDQnpWRVBCNm9ud0pLdUV6RlV2RXA1NGZlSG9Rd1FLMUJIWkZSUkhMNFlZeWQyMFFITzBPaU1TZm5WRDJSVHgxOWVYOEVOMDBkWVBKcTY0dG9HSVdCVWZYdHZBMDZPZnJNTklwcFFLN3h0OUlBMnhzNWtwM0FYUy9UWW15OGYvSzFVYmQ2KzhzTFRlSVpkR2FPai9uVXBPMmdiWkhzQStmR2dOSzlwUkE4MFNmT0NNQmdJTkdUelh2WlNRSlMvNHo1K0hhZXNVMUZQalV0SEpCM0RCUE1UcS9WZTlTZE5hSmtib3F0MVAyVkJkZUh6MTRqL28ydi9QdjVyeGhKdENsYXNiYmNaMGZhZFpWZzM0NWNBRDlkenZpOXo2TGFCeU5vbmtiVnFENVFMNGl0NmkydU9ia1lqVW9oMWpsRjFSTjQyMUppbWlVQ28vMG0xRWpVMWRFUFZJMW93Mk1pblZVVmJCNi9QZms4a09JaDlwZFBTT3hxZVFtcXJ5UGM1QkhSYXFYWEhZYlQ5Rzc4dkxaN3lPckFMZzlYSmlBcllpQzZaNy9VVHA5TWk4ZFhVVE1wN3BMV3hZQ09kL2J3SDRyQW44Z2Jzd1N3THdDWGJWSkZydjlRMnpnSHBLNnU5Wkt3c3VLSmRxUndnb1VPQlJEallnNzFHUWdGaWZpdlY1UzFNWG10SXo1cWgzVG1Tc29VVzVyOWxRc01LZFpvUWs1MUFXa3NGS3NUWWl1bkYwbkl2cTNMTU5DbXVzVXBtOVAxaWJSWlRQRGJuVWVBVEh2dDVyY3hVUWtXSytqZzdQOE1FUTBMNGRhcjd2TzZLODYrcnk0MUlISk5pOUI0T0s4MkN4MFNvS0pibmtYcm1LMnNSRlBGSWJkbS9ha1Y4SmRjcVZsL05EeTBneDYxQkdhYk44emxNWEZGMmJLOUxqVzFXSGJ6eE5TUkt5aXlxWWJCRDRvS1FMelNtNHNtUnJiaGNUTE8xeElSTzNpSXZ6bUZSWFNkajFrclVyZmJWTzNFLzFDRFBSa002V0lsQXNUUFJUQmRNMCtxc3dSaTNRNHBWMjRpWHBPaHgvRkZ4L3VKRmFBK3pidzlQL1ZPT08vZStjWHliWm1xYVZtTXhHVGFmbGt1bTQ4WnhReTJhbkFoYytqcTMzZUZqcWNkZEJEejVGQUdpbXdRL2lia2EvZXZPeHJRTHlIN0FXaW4wV0VSaGorczRYT2t1WnVUYk1TQjN2bzhyZ2NNZllJaDFBTG9zM09YcW85NkdPN1VKczQ5d3RVTGhtYUVIMEVvYzlVQXNmbEVDb2pkcUQ5TUFqREtUZnk2cmVHZis3Z2RGaDdnd3VwclBXaTlCMzNHdG9xN0ZtUExQelNENVd1QWxpOGI1NGpqREdTcDhrTHV2V25Wd2p1dVd4bjEwNEEwUytNMk9OYWJldE1uN0dXSDl2Y1BLR1M5TWVUNWkzRlRCOU9iSjRGL3dDUGhVZFU0N3pLRWZ0YVhnS2JRZXJObGxtRHhGdzl3dVhrWjBzNUREck1HaDh5aENTa0dLdGpIYXVJeFl1bEF6SjJtcEN5RytBaDVCTndGYmpZdlVDdkhyVUhhcGZwZWRsMmdRcmdPbEp2VUd0NnJYN25Udks1bkdrSnBnUVRXWTZPNEYvcnk0NWlUVEJCdkMxVzNtYmFOYnUyS3l1QjNwTkhCRHFrWDJJVnV6QVJIVDdxNnFac3p0b2Y3N0VFNUpzMDgrTmo4Y2l3c1d1d0VxYjFOK1pnSXdyQlpJU2R3QVdRSVA2L0NuZXNzY2g1OUw1RGdITjVyRTlndVJoUk44VjA5QjVIajk4QmhIazl5QWdiRExjdENpK2wzYTRIcXNpMlVGc1NWbXRtNEdFazdXUktqMWU3OUl2MWJNbmlHamduM0hxbVY3RkJ5TzI2TFhieW93UHk0Z1FPSkxWU1JwNzRnMUFrRGpmZGRyZ3haVk9pU2dlMXlTZFdKdHlCYlR2em5rb1NuclRoUm1PWERRU1BheEhzdnRzaWw1QTZxT0J3aXgyYnRyd1ZRT0JnbzRTY2ZEVWU4T0NhT0luV3hkTHpmRkNVcmU5ckdrZ3pLQ3RicGQvellRQU5qYUZCdXIyamNiQUZhWmg2ZU9oU0REUmVXMFFhVGdLRVB5d3JDOStrN0o3K1ptYm81TWhoRm1NcERVZExaQ3FkTnJYMkVTUUZScThWNnVYN0hJSUtaRnBVeG4yRU9mL3RlZUFOTmtjRzlNdjFUZEljaDJ4TWZ1blVHTUtteTBFWG82S0VmeVZKb3hEQTdVVWl3MHNQRWdnUXpBTW1yei9jUUlGZ2lmKzVPTnYwOER0ZnJYSEpWaHJkc3hyTmJpT1ZzR01oOC85S3p4VEZJS2pVejZQZ0IxbzV4bzVDbS9tTTVuVFB3cWhhdnphUHRGSGEyNllnYW1IVnJOOW5lUXNlc1p5cjVleHFqUk9lVlVza1hwY3d4ZmY3all2OFpqdzlXK1ZtZGdaNFEwcjVZNHlLM3lmVkU1QXloYnhvRGRsLzdDY1BoTmUwK2dYd0d1VmlrSGdicmJVN0NVZTRxUmVuK0hqaTNnT2pkcmdoZUluRnJhNm9PR3pYMVR6c3FrekJrVFJndmFoQUwwa0xuL1d5U2xnb2tIdVRvd3UzY1VpMEhOVGcwMkVNQ0MyOGZtMkJjMUpUQ3FVOUp5dnNudUxqTDJGK0h5bU1tVEhEZDdJRHlwQmlaNW54QXFOdUhYWUhSRDlMZUVKTWZrMkhheEx3OUhhTFcyeUtDTUk2RVNoTWE5WGdra09lSTdBZG12WEZydWllRnlOeGJ0aE9yTG42eCtRSXZJOG5OMXhLejZFblYwQVFIelU4VzA0NmpmcCsvbzA3amtSbXloSjFLcjNvVTRYcDg3enYwcHhXM3VGb2JvaDRYc0YrY1JPcmtCa0l1WkJ0RHVJM1NHeXpkVm5RK2JtT3pxWmlrZ3NDS1RJTWFlcXNFeHRYRXVPN3VqeXRha3NETHJsMkVZY1ZHNHFzVXE4UXpOT3RvR2JRZWxvclQ4SXdoekw0MnQ3eSt0My8waE1Cam1JRm9ObUU4TFZZWEkxZ0NWMDhybGFGelhZL0pJY3FObXZybWhaYTN5cmpXZk5rRlNPUXIzcmtJK1NrSS8wUTJZd0VRVjYzRGRJK2NCSGFENTdmaUVCOHJsVjd1T0E0T0IvdE52d05qdUY2YU9laGNNNUxWeGVVMm1BeGR4Wjl2S2JmMlpGZXlhQXlaczV0Q2FEZXFXTEtQQWJlTCtqekZqMHo2SkorQTdNbUJ5dTNhOU93MVJnUHYraGswL1luQWcrbFVMZ3Zmd2liS3FvZENoWDl0dStmTFdmMFJaMmRZc3VaVDE3RFlweUhUdWxTK2Q0SG1OSjFQT3FQWEtpL09uRFJnYmU2KzRoS2JaWW93bzdKUUl0eWZTa1lUWXFHZkJCSTdiaUF1bDFveHVVLzd0dU9EM2pXYk5RdTcvSGM0N3BTU3FkT0JFM3NCNVlCSjlsR28vaVJjMDdzcjZnMURKWDZBV1JObmI2cDF5MjN5bDJjWE10Y2h4RldacVYzdG51L2hhUmJyZ0QvMldKSzZZeXl5QTBJUzFMNG1Gam5KUkxuTTZTM2tUQWt5ZStnbURDVndEbW1HejViOE56ZUdTb1NnaU56Zk5FaG95UzRyS0h1OU9PZHJoT0tMR2krODRjczR1end1ZHNncEp3aFNhNUY2Q3lqdmh1VWY3MTRRN2ZQM2ZsZlh1eWx3emV2L1dCZGNONmg5Z1huL2RYb1V6S0NOZ09WWVJmeUZOdmpMTUtwa1JWRUljZFo4QzF1V3lNaTk2cUswOE1aWUtYRXdmcGxydlZLNDRWWENaNkYzOHpUTEFwb0MxTCs4ZnEzMnFSSUs3YjJUZC9GbVlRTVQrQVh5dGQ2SGZDYis1WmR2d01DdzJTZ2FLRUV3cmFOUXNjYkJWaktuR0tFa1VxUHRFQ0JHM05LTmhCNytrIn0=";
+
+const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+
+async function rasshifrovat(parol){
+  const p = JSON.parse(atob(SHIFR));
+  const kluch0 = await crypto.subtle.importKey("raw", new TextEncoder().encode(parol), "PBKDF2", false, ["deriveKey"]);
+  const kluch = await crypto.subtle.deriveKey(
+    {name:"PBKDF2", salt:b64(p.salt), iterations:p.iter, hash:"SHA-256"},
+    kluch0, {name:"AES-GCM", length:256}, false, ["decrypt"]);
+  const otkr = await crypto.subtle.decrypt({name:"AES-GCM", iv:b64(p.iv)}, kluch, b64(p.data));
+  return JSON.parse(new TextDecoder().decode(otkr));
+}
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const spisok = arr => arr.length ? `<ul class="spisok">${arr.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>` : `<p class="malo">—</p>`;
+const rub = n => n.toLocaleString("ru-RU") + " ₽";
+
+function kartochka(k, etapy){
+  const put = etapy.map(e => `<div class="shag ${e.n<k.etap?"done":e.n===k.etap?"now":""}"></div>`).join("");
+  const spisokEtapov = etapy.map(e => `
+    <div class="etap ${e.n<k.etap?"done":e.n===k.etap?"now":""}">
+      <div class="n">${e.n<k.etap?"✓":e.n}</div>
+      <div><b>${esc(e.nazvanie)}</b> <span class="malo">${esc(e.vremya)}</span><small>${esc(e.opisanie)}</small></div>
+    </div>`).join("");
+  const oplacheno = k.oplata.platezhi.reduce((s,p)=>s+p.summa,0);
+  const proc = Math.round(oplacheno / k.oplata.vsego * 100);
+  const podpisEtapa = `Этап ${k.etap} из ${etapy.length}`;
+  const istoriya = [...k.istoriya].reverse().map(v => `
+    <details>
+      <summary>${esc(v.nazvanie)} <span>${esc(v.data)}</span></summary>
+      <p class="malo">Итоги</p>${spisok(v.itogi)}
+      ${v.zadaniya.length?`<p class="malo">Задания</p>${spisok(v.zadaniya)}`:""}
+      ${v.dogovorennosti.length?`<p class="malo">Договорённости</p>${spisok(v.dogovorennosti)}`:""}
+    </details>`).join("");
+  return `
+  <section class="klient">
+    <h2>${esc(k.imya)}</h2>
+    <div class="meta">${esc(k.kratko)}</div>
+    <div class="meta">${esc(k.otkuda)}</div>
+    <span class="status">${esc(k.status)}</span>
+
+    <div class="put">${put}</div>
+    <div class="put-podpis"><span>${podpisEtapa}</span><span>${k.vremya_vstrech.map(esc).join(" · ")}</span></div>
+
+    <div class="blok">
+      <h3>Следующая встреча</h3>
+      <div class="sled">
+        <div class="zag">${esc(k.sleduyushchaya.nazvanie)}</div>
+        <div class="kogda">${esc(k.sleduyushchaya.kogda)}</div>
+        ${spisok(k.sleduyushchaya.podgotovka)}
+      </div>
+    </div>
+
+    <div class="blok"><h3>Открыто</h3>${spisok(k.otkryto)}</div>
+
+    <div class="blok"><h3>Его слова</h3><div class="slova">${k.ego_slova.map(s=>`<div>${esc(s)}</div>`).join("")}</div></div>
+
+    <div class="blok"><h3>Что болит</h3>${spisok(k.bol)}</div>
+
+    <div class="blok"><h3>Путь ведения</h3><div class="etapy">${spisokEtapov}</div></div>
+
+    <div class="blok">
+      <h3>Оплата</h3>
+      <div class="dengi"><span>${rub(oplacheno)} из ${rub(k.oplata.vsego)}</span><div class="bar"><i style="width:${proc}%"></i></div></div>
+      <p class="malo">Следующий: ${esc(k.oplata.sleduyushiy)}</p>
+    </div>
+
+    <div class="blok"><h3>История</h3>${istoriya}</div>
+  </section>`;
+}
+
+function pokazat(d){
+  document.getElementById("vhod").hidden = true;
+  const ekran = document.getElementById("ekran");
+  ekran.innerHTML = `<h1>Клиенты</h1><p class="sub">Обновлено ${esc(d.obnovleno)} · ${d.klienty.length} в работе</p>`
+    + d.klienty.map(k => kartochka(k, d.etapy)).join("");
+  ekran.hidden = false;
+}
+
+document.getElementById("vhod").addEventListener("submit", async e => {
+  e.preventDefault();
+  const parol = document.getElementById("parol").value;
+  const osh = document.getElementById("oshibka");
+  osh.textContent = "Открываю…";
+  try {
+    const d = await rasshifrovat(parol);
+    try { sessionStorage.setItem("klienty-p", parol); } catch(_) {}
+    pokazat(d);
+  } catch(_) {
+    osh.textContent = "Пароль не подошёл — данные не расшифровались.";
+  }
+});
+
+// пароль помнится до закрытия вкладки
+(async () => {
+  let p = null;
+  try { p = sessionStorage.getItem("klienty-p"); } catch(_) {}
+  if (p) { try { pokazat(await rasshifrovat(p)); } catch(_) {} }
+})();
+</script>
+</body>
+</html>
