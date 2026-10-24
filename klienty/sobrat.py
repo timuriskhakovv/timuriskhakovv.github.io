@@ -55,7 +55,7 @@ def main():
         if r.returncode == 0:
             print("изменений нет")
             return
-        subprocess.run(["git", "-C", str(repo), "commit", "-q", "-m", "Клиенты: обновление страницы"], check=True)
+        subprocess.run(["git", "-C", str(repo), "commit", "-q", "-m", "Клиенты: обновление страницы\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"], check=True)
         subprocess.run(["git", "-C", str(repo), "push", "-q"], check=True)
         print("отправлено: https://timuriskhakovv.github.io/klienty/")
 
